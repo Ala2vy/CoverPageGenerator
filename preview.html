@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Cover Page Preview</title>
+    <style>
+        /* ========== ORIGINAL STYLES (unchanged) ========== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', 'Times New Roman', serif; 
+            background: #f5f7fa; 
+            padding: 0; 
+            margin: 0; 
+            min-height: 100vh; 
+            display: flex; 
+            align-items: center;
+            justify-content: center;
+        }
+        .container { 
+            max-width: 1000px; 
+            margin: 0; 
+            width: 100%; 
+            padding: 1rem; 
+        }
+        .cover { 
+            background: white; 
+            border: 3px solid #0f2b3d; 
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            aspect-ratio: 1 / 1.41;
+        }
+        .cover-inner { 
+            padding: 2rem; 
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* PRINT STYLES – hide buttons and back link, keep only the cover */
+      @media print {
+    @page { 
+        size: A4; 
+        margin: 0.25in; 
+    }
+    body { 
+        background: white; 
+        padding: 0; 
+        margin: 0; 
+    }
+    .container { 
+        width: 100%; 
+        margin: 0; 
+        padding: 0; 
+        max-width: 100%; 
+    }
+    .cover { 
+        border: 3px solid #0f2b3d;
+        width: 100%;
+        height: 267mm;
+        max-height: 267mm;
+        aspect-ratio: unset;
+        overflow: hidden;
+        box-shadow: none; 
+        margin: 0;
+        page-break-after: avoid;
+        page-break-inside: avoid;
+    }
+    .cover-inner { 
+        padding: 2rem !important;
+        height: 100% !important;
+    }
+    .button-group, .btn, .btn-back, .btn-print {
+        display: none !important;
+    }
+    * { 
+        -webkit-print-color-adjust: exact !important; 
+        print-color-adjust: exact !important; 
+    }
+}
+        
+        /* Rest of the styles (unchanged) */
+        .header-centered { 
+            text-align: center; 
+            border-bottom: 3px solid #0f2b3d; 
+            padding-bottom: 1.2rem; 
+            margin-bottom: 1.2rem; 
+            flex-shrink: 0;
+        }
+        
+        .logo-img { 
+            max-width: 90px; 
+            height: auto; 
+            display: block; 
+            margin: 0 auto 0.8rem; 
+        }
+        
+        .university-name { 
+            font-size: 1.8rem; 
+            color: #0f2b3d; 
+            font-weight: 700; 
+            margin-bottom: 0.6rem; 
+            letter-spacing: 0.5px;
+        }
+        
+        .department-name { 
+            font-size: 0.95rem; 
+            color: #1e3a5f; 
+            border-top: 2px solid #cbd5e0; 
+            display: inline-block; 
+            padding-top: 0.4rem; 
+            margin-top: 0.4rem; 
+            font-weight: 600;
+        }
+        
+        .doc-head { 
+            text-align: center; 
+            margin: 0.8rem 0 1rem; 
+            flex-shrink: 0;
+        }
+        
+        .doc-head span { 
+            font-size: 1.2rem; 
+            font-weight: 700; 
+            background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%); 
+            padding: 0.2rem 1.5rem; 
+            border-radius: 50px; 
+            color: #0c4a6e; 
+            border: 2px solid #c7d2fe;
+            letter-spacing: 0.8px;
+        }
+        
+        .info-table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-bottom: 0.8rem; 
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+        
+        .info-table th, .info-table td { 
+            border: 2px solid #cbd5e0; 
+            padding: 6px 8px; 
+            vertical-align: top; 
+        }
+        
+        .info-table th { 
+            background-color: #eef2ff; 
+            font-weight: 700; 
+            width: 25%; 
+            text-align: left; 
+            color: #1e3a5f;
+        }
+        
+        .info-table td { 
+            text-align: left; 
+            color: #2d3748;
+        }
+
+        .assignment-container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            border: 2px solid #cbd5e0;
+            background: white;
+            margin-bottom: 0;
+            flex: 1;
+            min-height: 0;
+        }
+
+        .submitted-header {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #1e3a5f;
+            text-align: center;
+            padding: 0.4rem 0.5rem;
+            border-bottom: 2px solid #cbd5e0;
+            background: #eef2ff;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            flex-shrink: 0;
+        }
+        
+        .submitted-content {
+            padding: 0.7rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            gap: 0;
+        }
+
+        .report-container {
+            border: 2px solid #cbd5e0;
+            background: white;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+        
+        .report-header {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #1e3a5f;
+            background: #eef2ff;
+            padding: 0.4rem 0.5rem;
+            border-bottom: 2px solid #cbd5e0;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        
+        .report-body {
+            padding: 0.7rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+
+        .grid-row {
+            width: 100%;
+            display: table;
+            border: 1px solid #e2e8f0;
+            background: white;
+            margin-bottom: 0.2rem;
+            border-collapse: collapse;
+            flex-shrink: 0;
+        }
+        
+        .grid-column {
+            display: table-cell;
+            width: 50%;
+            border-right: 1px solid #e2e8f0;
+            padding: 0;
+        }
+        
+        .grid-column:last-child {
+            border-right: none;
+        }
+        
+        .grid-label {
+            font-weight: 600;
+            font-size: 0.75rem;
+            color: #1e3a5f;
+            background: #eef2ff;
+            padding: 3px 5px;
+            border-bottom: 1px solid #e2e8f0;
+            text-transform: capitalize;
+        }
+        
+        .grid-value {
+            padding: 3px 5px;
+            color: #2d3748;
+            font-size: 0.8rem;
+            min-height: 18px;
+        }
+
+        .students-wrapper {
+            flex: 0 0 auto;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            margin-bottom: 0;
+        }
+
+        .remarks-section {
+            width: 100%;
+            border-left: 1px solid #e2e8f0;
+            border-right: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+            background: white;
+            margin-top: 0;
+            padding: 0;
+            flex: 0.5;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+        
+        .remarks-header {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #1e3a5f;
+            text-align: center;
+            padding: 0.4rem 0.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            background: #eef2ff;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            flex-shrink: 0;
+        }
+        
+        .remarks-body {
+            flex: 1;
+            padding: 0.5rem;
+            font-size: 0.8rem;
+            line-height: 1.3;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+            min-height: 0;
+        }
+
+        .button-group { 
+            margin-top: 1.5rem; 
+            text-align: center; 
+            gap: 1rem; 
+            display: flex; 
+            justify-content: center; 
+        }
+        
+        .btn { 
+            background: #1e3a5f; 
+            color: white; 
+            border: none; 
+            padding: 10px 20px; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            text-decoration: none; 
+            font-size: 0.95rem; 
+            display: inline-block;
+            font-weight: 600;
+            transition: background 0.3s ease;
+        }
+        
+        .btn:hover {
+            background: #0f2b3d;
+        }
+        
+        .btn-print { 
+            background: #2c5282; 
+        }
+        
+        .btn-print:hover {
+            background: #1e3a5f;
+        }
+        
+        .btn-back { 
+            background: #4a5568; 
+        }
+        
+        .btn-back:hover {
+            background: #2d3748;
+        }
+        
+        /* Mobile optimisation */
+       @media (max-width: 700px) {
+    body { padding: 0; }
+    .container { padding: 0.5rem; }
+    .cover { 
+        aspect-ratio: unset;
+        height: auto;
+        min-height: unset;
+    }
+    .cover-inner { 
+        padding: 1rem !important; 
+        height: auto !important;
+        min-height: unset;
+        flex: 1;
+    }
+    .university-name { font-size: 1.3rem; }
+    .department-name { font-size: 0.75rem; }
+    .doc-head span { font-size: 1rem; padding: 0.15rem 1rem; }
+    .info-table th, .info-table td { padding: 3px 5px; font-size: 0.7rem; }
+    .submitted-header, .report-header, .remarks-header { font-size: 0.75rem; padding: 0.3rem; }
+    .grid-label { font-size: 0.65rem; padding: 2px 4px; }
+    .grid-value { font-size: 0.7rem; padding: 2px 4px; }
+    .remarks-body { padding: 0.3rem; font-size: 0.7rem; }
+    .button-group .btn { padding: 6px 12px; font-size: 0.8rem; }
+}
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="cover">
+        <div class="cover-inner" id="coverPreview">
+            <!-- Dynamic content -->
+        </div>
+    </div>
+    <div class="button-group">
+        <button class="btn btn-print" id="printBtn">Print / Save as PDF</button>
+        <a href="index.html" class="btn btn-back">← Back to Form</a>
+    </div>
+</div>
+
+<script>
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    function renderPreview(data) {
+        let coverType = data.coverType;
+        const department = data.department;
+        const courseCode = data.courseCode;
+        const courseTitle = data.courseTitle;
+        let docName = data.docName;
+        const subDate = data.submissionDate;
+        const semester = data.semester;
+        const section = data.section;
+        const batch = data.batch;
+        const session = data.session;
+        const teacherName = data.teacherName;
+        const designation = data.designation;
+        const teacherDept = data.teacherDept;
+        const students = data.students || [];
+        const reportNo = data.reportNo || '';
+
+        const submittedToText = `${escapeHtml(teacherName)}<br>${escapeHtml(designation)}<br>${escapeHtml(teacherDept)}`;
+
+        // For display, treat "Project Report" and "Lab Report" the same as "Report"
+        let displayType = coverType;
+        let isAssignment = (coverType === 'Assignment');
+        let isLabReport = (coverType === 'Lab Report');
+        // For the info table title, we use the original coverType value
+        let typeName = coverType;
+
+        let html = `
+            <div class="header-centered">
+                <img class="logo-img" src="images/puc_logo.png" alt="Logo" onerror="this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2290%22%20height%3D%2290%22%20viewBox%3D%220%200%2080%2080%22%3E%3Crect%20width%3D%2280%22%20height%3D%2280%22%20fill%3D%22%231e3a5f%22%2F%3E%3Ctext%20x%3D%2225%22%20y%3D%2250%22%20fill%3D%22white%22%20font-size%3D%2230%22%3E🏛%3C%2Ftext%3E%3C%2Fsvg%3E';">
+                <div class="university-name">Premier University Chittagong</div>
+                <div class="department-name">DEPARTMENT OF ${escapeHtml(department).toUpperCase()}</div>
+            </div>
+            <div class="doc-head"><span>${escapeHtml(coverType).toUpperCase()}</span></div>
+            <table class="info-table">
+                <tr><th>Course Code</th><td>${escapeHtml(courseCode)}<\/td></tr>
+                <tr><th>Course Title</th><td>${escapeHtml(courseTitle)}<\/td></td>
+        `;
+        
+        // Add Report No row for Lab Report
+        if (isLabReport) {
+            html += `<tr><th>Report No</th><td>${escapeHtml(reportNo)}<\/td></tr>`;
+        }
+        
+        html += `        
+                <tr><th>${escapeHtml((coverType === 'Project Report' || coverType === 'Lab Report') ? 'Report' : typeName)} Name</th><td>${escapeHtml(docName)}<\/td></td>
+                <tr><th>Date of Submission</th><td>${escapeHtml(subDate)}<\/td></td>
+                <tr><th>Submitted to</th><td>${submittedToText}<\/td></tr>
+            </table>
+        `;
+
+        function metadataRows() {
+            return `
+                <div class="grid-row">
+                    <div class="grid-column"><div class="grid-label">Semester</div><div class="grid-value">${escapeHtml(semester)}</div></div>
+                    <div class="grid-column"><div class="grid-label">Section</div><div class="grid-value">${escapeHtml(section)}</div></div>
+                </div>
+                <div class="grid-row">
+                    <div class="grid-column"><div class="grid-label">Batch</div><div class="grid-value">${escapeHtml(batch)}</div></div>
+                    <div class="grid-column"><div class="grid-label">Session</div><div class="grid-value">${escapeHtml(session)}</div></div>
+                </div>
+            `;
+        }
+
+        if (isAssignment) {
+            html += `<div class="assignment-container">
+                <div class="submitted-header">Submitted By</div>
+                <div class="submitted-content">
+                    <div class="students-wrapper">`;
+            for (const s of students) {
+                html += `<div class="grid-row">
+                            <div class="grid-column"><div class="grid-label">Name</div><div class="grid-value">${escapeHtml(s.name)}</div></div>
+                            <div class="grid-column"><div class="grid-label">ID</div><div class="grid-value">${escapeHtml(s.id)}</div></div>
+                         </div>`;
+            }
+            html += metadataRows();
+            html += `</div>
+                    <div class="remarks-section">
+                        <div class="remarks-header">Remarks</div>
+                        <div class="remarks-body"></div>
+                    </div>
+                </div>
+            </div>`;
+        } else {
+            // For Project Report and Lab Report – same layout (no remarks)
+            html += `<div class="report-container">
+                <div class="report-header">Submitted By</div>
+                <div class="report-body">
+                    <div class="students-wrapper">`;
+            for (const s of students) {
+                html += `<div class="grid-row">
+                            <div class="grid-column"><div class="grid-label">Name</div><div class="grid-value">${escapeHtml(s.name)}</div></div>
+                            <div class="grid-column"><div class="grid-label">ID</div><div class="grid-value">${escapeHtml(s.id)}</div></div>
+                         </div>`;
+            }
+            if (students.length === 0) {
+                html += `<div style="text-align:center;color:#999;padding:20px;">No student information provided.</div>`;
+            }
+            html += metadataRows();
+            html += `</div>
+                </div>
+            </div>`;
+        }
+
+        document.getElementById('coverPreview').innerHTML = html;
+    }
+
+    const stored = localStorage.getItem('coverPageData');
+    if (stored) {
+        try {
+            const data = JSON.parse(stored);
+            renderPreview(data);
+        } catch(e) {
+            document.getElementById('coverPreview').innerHTML = '<div style="padding:2rem;text-align:center;">Error loading data. Please go back to the form and generate again.</div>';
+        }
+    } else {
+        document.getElementById('coverPreview').innerHTML = '<div style="padding:2rem;text-align:center;">No data found. Please go back to the form and generate a cover page.</div>';
+    }
+
+    document.getElementById('printBtn').addEventListener('click', function() {
+        window.print();
+    });
+</script>
+</body>
+</html>
